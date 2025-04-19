@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Super Admin Dashboard</h1>
+    <a href="{% url 'export_flight_data' %}" class="btn btn-success mb-3">Export Data as CSV</a>
+    <a href="{% url 'view_logs' %}" class="btn btn-info mb-3">View Logs</a>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Flight Number</th>
+                <th>Aircraft Registration</th>
+                <th>Flight Crew</th>
+                <th>SN Crew</th>
+                <th>Cabin Crew</th>
+                <th>AFL Number</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Air Time (Hrs)</th>
+                <th>Air Time (Mins)</th>
+                <th>Block Time (Hrs)</th>
+                <th>Block Time (Mins)</th>
+                <th>Fuel Uplift (Liters)</th>
+                <th>Sp. Gravity</th>
+                <th>Temp (°C)</th>
+                <th>Fuel Added (kg)</th>
+                <th>Total Fuel (tons)</th>
+                <th>Fuel Burnt (tons)</th>
+                <th>Remaining Fuel (tons)</th>
+                <th>Mail (kg)</th>
+                <th>Cargo (kg)</th>
+                <th>Pax</th>
+                <th>Weight (kg)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for flight in flights %}
+                <tr>
+                    <td>{{ flight.date }}</td>
+                    <td>{{ flight.flight_number }}</td>
+                    <td>{{ flight.aircraft_registration }}</td>
+                    <td>{{ flight.flight_crew }}</td>
+                    <td>{{ flight.sn_crew }}</td>
+                    <td>{{ flight.cabin_crew }}</td>
+                    <td>{{ flight.afl_number }}</td>
+                    <td>{{ flight.from_location }}</td>
+                    <td>{{ flight.to_location }}</td>
+                    <td>{{ flight.air_time_hrs }}</td>
+                    <td>{{ flight.air_time_mins }}</td>
+                    <td>{{ flight.block_time_hrs }}</td>
+                    <td>{{ flight.block_time_mins }}</td>
+                    <td>{{ flight.fuel_uplift_liters }}</td>
+                    <td>{{ flight.sp_gravity }}</td>
+                    <td>{{ flight.temp_c }}</td>
+                    <td>{{ flight.fuel_added_kg }}</td>
+                    <td>{{ flight.total_fuel_tons }}</td>
+                    <td>{{ flight.fuel_burnt_tons }}</td>
+                    <td>{{ flight.remaining_fuel_tons }}</td>
+                    <td>{{ flight.mail_kg }}</td>
+                    <td>{{ flight.cargo_kg }}</td>
+                    <td>{{ flight.pax }}</td>
+                    <td>{{ flight.weight_kg }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">FOI/FOD Dashboard</h1>
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="flight_id" value="{{ flight.id }}">
+        <div class="mb-3">
+            <label for="id_date" class="form-label">Date</label>
+            <input type="text" id="id_date" name="date" class="form-control flatpickr" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_flight_number" class="form-label">Flight Number</label>
+            {{ form.flight_number }}
+        </div>
+        <div class="mb-3">
+            <label for="id_aircraft_registration" class="form-label">Aircraft Registration</label>
+            {{ form.aircraft_registration }}
+        </div>
+        <div class="mb-3">
+            <label for="id_flight_crew" class="form-label">Flight Crew</label>
+            {{ form.flight_crew }}
+        </div>
+        <div class="mb-3">
+            <label for="id_sn_crew" class="form-label">SN Crew</label>
+            {{ form.sn_crew }}
+        </div>
+        <div class="mb-3">
+            <label for="id_remarks" class="form-label">Remarks</label>
+            {{ form.remarks }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <h2 class="my-4">Your Flights</h2>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Flight Number</th>
+                <th>Aircraft Registration</th>
+                <th>Flight Crew</th>
+                <th>SN Crew</th>
+                <th>Remarks</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for flight in flights %}
+                <tr>
+                    <td>{{ flight.date }}</td>
+                    <td>{{ flight.flight_number }}</td>
+                    <td>{{ flight.aircraft_registration }}</td>
+                    <td>{{ flight.flight_crew }}</td>
+                    <td>{{ flight.sn_crew }}</td>
+                    <td>{{ flight.remarks }}</td>
+                    <td>
+                        {% if flight.is_editable %}
+                            <a href="{% url 'foi_fod_dashboard' %}?flight_id={{ flight.id }}" class="btn btn-warning btn-sm">Edit</a>
+                        {% else %}
+                            <span class="badge bg-secondary">Cannot Edit</span>
+                        {% endif %}
+                        {% if flight.last_edited_at %}
+                            <span class="badge bg-info">Edited</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    flatpickr("#id_date", {
+        dateFormat: "Y-m-d",
+        allowInput: true,
+    });
+</script>
+{% endblock %}

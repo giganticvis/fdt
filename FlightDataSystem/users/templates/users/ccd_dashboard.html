@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">CCD Dashboard</h1>
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_date" class="form-label">Date</label>
+            <input type="text" id="id_date" name="date" class="form-control flatpickr" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_flight" class="form-label">Select Flight</label>
+            {{ form.flight }}
+        </div>
+        <div class="mb-3">
+            <label for="id_cabin_crew" class="form-label">Cabin Crew</label>
+            {{ form.cabin_crew }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateField = document.getElementById('id_date');
+        const flightField = document.getElementById('id_flight');
+
+        flatpickr("#id_date", {
+            dateFormat: "Y-m-d",
+            allowInput: true,
+            onChange: function(selectedDates, dateStr, instance) {
+                const date = dateStr;
+                if (date) {
+                    fetch(`/get-flights/?date=${date}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            flightField.innerHTML = '';
+                            data.flights.forEach(flight => {
+                                const option = document.createElement('option');
+                                option.value = flight.id;
+                                option.textContent = flight.flight_number;
+                                flightField.appendChild(option);
+                            });
+                        });
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

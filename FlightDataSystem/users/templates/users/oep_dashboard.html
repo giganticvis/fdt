@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">OEP Dashboard</h1>
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_date" class="form-label">Date</label>
+            <input type="text" id="id_date" name="date" class="form-control flatpickr" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_flight" class="form-label">Select Flight</label>
+            {{ form.flight }}
+        </div>
+        <div class="mb-3">
+            <label for="id_afl_number" class="form-label">AFL Number</label>
+            {{ form.afl_number }}
+        </div>
+        <div class="mb-3">
+            <label for="id_from_location" class="form-label">From</label>
+            {{ form.from_location }}
+        </div>
+        <div class="mb-3">
+            <label for="id_to_location" class="form-label">To</label>
+            {{ form.to_location }}
+        </div>
+        <div class="mb-3">
+            <label for="id_air_time_hrs" class="form-label">Air Time (Hrs)</label>
+            {{ form.air_time_hrs }}
+        </div>
+        <div class="mb-3">
+            <label for="id_air_time_mins" class="form-label">Air Time (Mins)</label>
+            {{ form.air_time_mins }}
+        </div>
+        <div class="mb-3">
+            <label for="id_block_time_hrs" class="form-label">Block Time (Hrs)</label>
+            {{ form.block_time_hrs }}
+        </div>
+        <div class="mb-3">
+            <label for="id_block_time_mins" class="form-label">Block Time (Mins)</label>
+            {{ form.block_time_mins }}
+        </div>
+        <div class="mb-3">
+            <label for="id_fuel_uplift_liters" class="form-label">Fuel Uplift (Liters)</label>
+            {{ form.fuel_uplift_liters }}
+        </div>
+        <div class="mb-3">
+            <label for="id_sp_gravity" class="form-label">Sp. Gravity</label>
+            {{ form.sp_gravity }}
+        </div>
+        <div class="mb-3">
+            <label for="id_temp_c" class="form-label">Temp (°C)</label>
+            {{ form.temp_c }}
+        </div>
+        <div class="mb-3">
+            <label for="id_fuel_added_kg" class="form-label">Fuel Added (kg)</label>
+            {{ form.fuel_added_kg }}
+        </div>
+        <div class="mb-3">
+            <label for="id_total_fuel_tons" class="form-label">Total Fuel (tons)</label>
+            {{ form.total_fuel_tons }}
+        </div>
+        <div class="mb-3">
+            <label for="id_fuel_burnt_tons" class="form-label">Fuel Burnt (tons)</label>
+            {{ form.fuel_burnt_tons }}
+        </div>
+        <div class="mb-3">
+            <label for="id_remaining_fuel_tons" class="form-label">Remaining Fuel (tons)</label>
+            {{ form.remaining_fuel_tons }}
+        </div>
+        <div class="mb-3">
+            <label for="id_mail_kg" class="form-label">Mail (kg)</label>
+            {{ form.mail_kg }}
+        </div>
+        <div class="mb-3">
+            <label for="id_cargo_kg" class="form-label">Cargo (kg)</label>
+            {{ form.cargo_kg }}
+        </div>
+        <div class="mb-3">
+            <label for="id_pax" class="form-label">Pax</label>
+            {{ form.pax }}
+        </div>
+        <div class="mb-3">
+            <label for="id_weight_kg" class="form-label">Weight (kg)</label>
+            {{ form.weight_kg }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateField = document.getElementById('id_date');
+        const flightField = document.getElementById('id_flight');
+
+        flatpickr("#id_date", {
+            dateFormat: "Y-m-d",
+            allowInput: true,
+            onChange: function(selectedDates, dateStr, instance) {
+                const date = dateStr;
+                if (date) {
+                    fetch(`/get-flights/?date=${date}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            flightField.innerHTML = '';
+                            data.flights.forEach(flight => {
+                                const option = document.createElement('option');
+                                option.value = flight.id;
+                                option.textContent = flight.flight_number;
+                                flightField.appendChild(option);
+                            });
+                        });
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

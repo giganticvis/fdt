@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Welcome to the Home Page</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="list-group">
+        <a href="{% url 'foi_fod_dashboard' %}" class="list-group-item list-group-item-action">FOI/FOD Dashboard</a>
+        <a href="{% url 'ccd_dashboard' %}" class="list-group-item list-group-item-action">CCD Dashboard</a>
+        <a href="{% url 'oep_dashboard' %}" class="list-group-item list-group-item-action">OEP Dashboard</a>
+        {% if user.role == 'super_admin' %}
+            <a href="{% url 'super_admin_dashboard' %}" class="list-group-item list-group-item-action">Super Admin Dashboard</a>
+        {% endif %}
+        <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action">Admin Panel</a>
+    </div>
+</div>
+{% endblock %}
